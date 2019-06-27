@@ -1,9 +1,13 @@
 package com.example.myFileSave;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -16,9 +20,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
 
+    private static final String TAG = "SharedPreferences";
     private EditText mEditText;
     private FileOutputStream mFileOutputStream;
     private FileInputStream mFileInputStream;
@@ -27,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private BufferedWriter mWriter;
     private BufferedReader mReader;
     private StringBuilder mBuilder;
+    private Button btnEdit, btnPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +40,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mEditText = findViewById(R.id.edt_text);
         mContext = this;
+
+        btnEdit = findViewById(R.id.btn_share_preferences_edit);
+        btnPref = findViewById(R.id.btn_share_preferences_pref);
+        btnEdit.setOnClickListener(this);
+        btnPref.setOnClickListener(this);
 
         String connect = load();
         if(!TextUtils.isEmpty(connect)) {
@@ -92,5 +103,32 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_share_preferences_edit:
+                SharedPreferences.Editor editor = getSharedPreferences("edit", MODE_PRIVATE).edit();
+                editor.putString("name", "游文凯");
+                editor.putInt("age", 26);
+                editor.putBoolean("cool", true);
+                editor.apply();
+                Toast.makeText(mContext, "保存成功", Toast.LENGTH_SHORT).show();
+
+                break;
+            case R.id.btn_share_preferences_pref:
+                SharedPreferences pref = getSharedPreferences("edit", MODE_PRIVATE);
+                String name =pref.getString("name", "none");
+                int age =pref.getInt("age", 0);
+                Boolean cool = pref.getBoolean("cool", false);
+                Log.d(TAG, "我的名字是 " + name);
+                Log.d(TAG, "我的年龄是 " + age);
+                Log.d(TAG, "帅不帅 " + cool);
+                Toast.makeText(mContext, "取出成功", Toast.LENGTH_SHORT).show();
+
+                break;
+
+        }
     }
 }

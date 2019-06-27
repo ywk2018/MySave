@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <EditText
@@ -12,4 +13,16 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="200dp"
         android:hint="请输入内容"/>
+
+    <Button
+        android:id="@+id/btn_share_preferences_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="保存数据"/>
+
+    <Button
+        android:id="@+id/btn_share_preferences_pref"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="取出数据"/>
 </LinearLayout>
